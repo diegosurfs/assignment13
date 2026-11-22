@@ -1,48 +1,45 @@
-// Imports the Head component for page metadata.
+
 import Head from "next/head";
-
-// Imports the Link component for navigation between pages.
 import Link from "next/link";
-
-// Imports the function that reads all Markdown post information.
 import { getSortedPostsData } from "../lib/posts";
-// Imports the CSS module used to style the homepage.
 import styles from "../styles/Home.module.css";
 
-// Defines the homepage component and receives the post data as a prop.
 export default function Home({ allPostsData }) {
-  // Returns the HTML structure for the homepage.
   return (
     <div>
       <Head>
-        <title>Diego's Next.js Blog</title>
+        <title>Santa Rosa Restaurant Directory</title>
         <meta
           name="description"
-          content="A simple blog created with Next.js."
+          content="Explore restaurants and their cuisine and locations."
         />
       </Head>
 
       <main className={styles.container}>
         <section className={styles.hero}>
-          <p className={styles.eyebrow}>NEXT.JS BLOG</p>
-          <h1>Welcome to My Next.js Blog</h1>
+          <p className={styles.eyebrow}>RESTAURANT DIRECTORY</p>
+          <h1>Local Restaurants</h1>
           <p className={styles.description}>
-            This is my blog created while learning Next.js, React, and
-            JavaScript.
+            Discover restaurants, cuisines, and locations.
           </p>
         </section>
 
         <section className={styles.about}>
-          <h2>Blog Posts</h2>
+          <h2>Our Restaurants</h2>
 
           <ul>
-            {allPostsData.map(({ id, title, date }) => (
-              <li key={id}>
-                <Link href={`/posts/${id}`}>{title}</Link>
-                <br />
-                <small>{date}</small>
-              </li>
-            ))}
+            {allPostsData.map(
+              ({ id, title, date, cuisine, location }) => (
+                <li key={id}>
+                  <h3>
+                    <Link href={`/posts/${id}`}>{title}</Link>
+                  </h3>
+                  <p>Cuisine: {cuisine}</p>
+                  <p>Location: {location}</p>
+                  <small>{date}</small>
+                </li>
+              )
+            )}
           </ul>
         </section>
       </main>
@@ -50,12 +47,9 @@ export default function Home({ allPostsData }) {
   );
 }
 
-// Gets the Markdown post information at build time.
 export async function getStaticProps() {
-  // Reads and sorts all Markdown posts from the posts directory.
   const allPostsData = await getSortedPostsData();
 
-  // Sends the post information to the homepage component as props.
   return {
     props: {
       allPostsData,
